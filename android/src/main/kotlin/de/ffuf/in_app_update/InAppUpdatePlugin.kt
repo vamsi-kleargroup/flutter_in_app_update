@@ -236,7 +236,10 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
                         "updateAvailable" to true,
                         "immediateAllowed" to info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE),
                         "flexibleAllowed" to info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE),
-                        "availableVersionCode" to info.availableVersionCode()
+                        "availableVersionCode" to info.availableVersionCode(),
+                        "clientVersionStalenessDays" to info.clientVersionStalenessDays(),
+                        "updatePriority" to info.updatePriority()
+                        
                     )
                 )
             } else {
@@ -245,7 +248,10 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
                         "updateAvailable" to false,
                         "immediateAllowed" to false,
                         "flexibleAllowed" to false,
-                        "availableVersionCode" to null
+                        "availableVersionCode" to null,
+                        "clientVersionStalenessDays" to null,
+                        "updatePriority" to null
+
                     )
                 )
             }

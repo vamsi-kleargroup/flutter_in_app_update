@@ -11,8 +11,14 @@ class InAppUpdate {
   /// [startFlexibleUpdate] or [performImmediateUpdate] should be called.
   static Future<AppUpdateInfo> checkForUpdate() async {
     final result = await _channel.invokeMethod('checkForUpdate');
-    return AppUpdateInfo(result['updateAvailable'], result['immediateAllowed'],
-        result['flexibleAllowed'], result['availableVersionCode']);
+    return AppUpdateInfo(
+      result['updateAvailable'],
+      result['immediateAllowed'],
+      result['flexibleAllowed'],
+      result['availableVersionCode'],
+      result['clientVersionStalenessDays'],
+      result['updatePriority'],
+    );
   }
 
   /// Performs an immediate update that is entirely handled by the Play API.
@@ -42,10 +48,16 @@ class InAppUpdate {
 
 class AppUpdateInfo {
   final bool updateAvailable, immediateUpdateAllowed, flexibleUpdateAllowed;
-  final int availableVersionCode;
+  final int availableVersionCode, clientVersionStalenessDays, updatePriority;
 
-  AppUpdateInfo(this.updateAvailable, this.immediateUpdateAllowed,
-      this.flexibleUpdateAllowed, this.availableVersionCode);
+  AppUpdateInfo(
+    this.updateAvailable,
+    this.immediateUpdateAllowed,
+    this.flexibleUpdateAllowed,
+    this.availableVersionCode,
+    this.clientVersionStalenessDays,
+    this.updatePriority,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -55,18 +67,24 @@ class AppUpdateInfo {
           updateAvailable == other.updateAvailable &&
           immediateUpdateAllowed == other.immediateUpdateAllowed &&
           flexibleUpdateAllowed == other.flexibleUpdateAllowed &&
-          availableVersionCode == other.availableVersionCode;
+          availableVersionCode == other.availableVersionCode &&
+          clientVersionStalenessDays == other.clientVersionStalenessDays &&
+          updatePriority == other.updatePriority;
 
   @override
   int get hashCode =>
       updateAvailable.hashCode ^
       immediateUpdateAllowed.hashCode ^
       flexibleUpdateAllowed.hashCode ^
-      availableVersionCode.hashCode;
+      availableVersionCode.hashCode ^
+      updatePriority.hashCode ^
+      clientVersionStalenessDays.hashCode;
 
   @override
   String toString() => 'InAppUpdateState{updateAvailable: $updateAvailable, '
       'immediateUpdateAllowed: $immediateUpdateAllowed, '
       'flexibleUpdateAllowed: $flexibleUpdateAllowed, '
-      'availableVersionCode: $availableVersionCode}';
+      'availableVersionCode: $availableVersionCode,'
+      'clientVersionStalenessDays: $clientVersionStalenessDays, '
+      'updatePriority: $updatePriority}';
 }
